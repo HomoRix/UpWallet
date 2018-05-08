@@ -173,6 +173,10 @@
         src="https://cdn.ethers.io/scripts/ethers-v2.min.js"
         type="text/javascript">
         </script>
+        <script type="text/javascript" src="./jsbip39/unorm.js"></script>
+        <script type="text/javascript" src="./jsbip39/sjcl-bip39.js"></script>
+        <script type="text/javascript" src="./jsbip39/wordlist_english.js"></script>
+        <script type="text/javascript" src="./jsbip39/jsbip39.js"></script>
         <script type="text/javascript">
             function setEnter(source, target) {
                 source.onkeyup = function(e) {
@@ -350,11 +354,14 @@
                 refresh();
             }
 
-            function showMnemonic() {
-                // var mnemonic = bip39.generateMnemonic();
-                // document.getElementById('select-mnemonic-phrase').value = mnemonic;
-            }
+            function showMnemonic() { 
+                var m = new Mnemonic("english")
 
+                // Generate new mnemonics
+                var mnemonic = m.generate();
+                document.getElementById('select-mnemonic-phrase').value = mnemonic;
+                console.log(mnemonic)
+            }
         </script>
     </body>
 </html>
