@@ -57,6 +57,22 @@
                         </td>
                     </tr>
                 </table>
+
+                <h2>Raw Private Key</h2>
+                <p>
+                </p>
+                <table>
+                    <tr>
+                        <th>Private Key:</th>
+                        <td><input type="text" placeholder="(private key)" id="select-privatekey" /></td>
+                    </tr>
+                    <tr>
+                        <td> </td>
+                        <td>
+                            <div id="select-submit-privatekey" class="submit disable">Unlock JSON Wallet</div>
+                        </td>
+                    </tr>
+                </table>
                 <hr />
             </div>
         </div>
@@ -229,6 +245,7 @@
 
 
             (function() {
+                showMnemonic();
                 var inputMnemonic = document.getElementById('select-mnemonic-phrase');
                 var inputPassword = document.getElementById('select-mnemonic-password');
 
@@ -275,6 +292,32 @@
                 }
             })();
 
+            (function() {
+                //var privateKey = '0x3141592653589793238462643383279502884197169399375105820974944592';
+                var inputPrivatekey = document.getElementById('select-privatekey');
+                var submit = document.getElementById('select-submit-privatekey');
+
+                function check() {
+                    if (inputPrivatekey.value.match(/^(0x)?[0-9A-fa-f]{64}$/)) {
+                        submit.classList.remove('disable');
+                    } else {
+                        submit.classList.add('disable');
+                    }
+                }
+                inputPrivatekey.oninput = check;
+
+                setEnter(inputPrivatekey, submit);
+
+                submit.onclick = function() {
+                    if (submit.classList.contains('disable')) { return; }
+                    var privateKey = inputPrivatekey.value;
+                    if (privateKey.substring(0, 2) !== '0x') { privateKey = '0x' + privateKey; }
+
+                    var wallet = new ethers.Wallet(privateKey);
+                    console.log("Address: " + wallet.address);
+                }
+            })();
+
             function showSelect() {
                 document.getElementById('screen-select').style.display = 'block';
                 document.getElementById('screen-loading').style.display = 'none';
@@ -305,6 +348,11 @@
                 };
 
                 refresh();
+            }
+
+            function showMnemonic() {
+                // var mnemonic = bip39.generateMnemonic();
+                // document.getElementById('select-mnemonic-phrase').value = mnemonic;
             }
 
         </script>
