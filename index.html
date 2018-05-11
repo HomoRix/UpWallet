@@ -347,50 +347,19 @@
                 inputTargetAddress.oninput = check;
                 inputAmount.oninput = check;
 
-                // var optionTestnet = document.getElementById('option-testnet');
-                // var optionMainnet = document.getElementById('option-mainnet');
-
-                // Select the testnet network
-                // optionTestnet.onclick = function() {
-                //     if (optionTestnet.classList.contains('selected')) { return; }
-                //     addActivity('! Switched network: Testnet');
-                //     activeWallet.provider = new ethers.providers.getDefaultProvider(true);
-                //     optionTestnet.classList.add('selected');
-                //     optionMainnet.classList.remove('selected');
-                //     refresh();
-                // }
-
-                // // Select the mainnet network
-                // optionMainnet.onclick = function() {
-                //     if (optionMainnet.classList.contains('selected')) { return; }
-                //     addActivity('! Switched network: Mainnet');
-                //     activeWallet.provider = new ethers.providers.getDefaultProvider(false);
-                //     optionTestnet.classList.remove('selected');
-                //     optionMainnet.classList.add('selected');
-                //     refresh();
-                // }
-
                 // Send ether
                 submit.onclick = function() {
 
                     var targetAddress = inputTargetAddress.value;
                     var ethValue = new Number(inputAmount.value);
                     var gasAmount = 2000000;
-                    // var gasPrice = '0x09184e72a000';
-                    // var gasLimit = '0x09184e72a000';
-
-                    // var signedTransaction = web3.eth.signTransaction({
-                    //     to: targetAddress,
-                    //     value: ethValue,
-                    //     gas: gasAmount
-                    // }).then(console.log);
 
                     var tx = new ethereumjs.Tx({
                         nonce: '0x00',
                         gasPrice: '0x00',
-                        gasLimit: '0x2710',
+                        gasLimit: '0x27100',
                         to: targetAddress,
-                        value: web3.toWei(ethValue, 'ether'),
+                        value: '100',
                         data: '',
                     });
 
@@ -404,33 +373,6 @@
                         console.log(err);
                         console.log(transactionHash);
                     });
-                    // web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')).on('receipt', console.log);
-
-
-                    // Matt (from Etherscan) is working on a gasPrice API call, which
-                    // should be done within a week or so.
-                    // @TODO
-                    // var gasPrice = (activeWallet.provider.testnet ? 0x4a817c800: 0xba43b7400);
-                    // console.log('GasPrice: ' + gasPrice);
-
-                    // var targetAddress = ethers.utils.getAddress(inputTargetAddress.value);
-                    // var amountWei = ethers.utils.parseEther(inputAmount.value);
-                    // activeWallet.send(targetAddress, amountWei, {
-                    //     gasPrice: gasPrice,
-                    //     gasLimit: 21000,
-                    // }).then(function(txid) {
-                    //     var url = (activeWallet.provider.testnet ? 'https://testnet.etherscan.io/tx/': 'https://etherscan.io/tx/') + txid;
-                    //     addActivity('< Transaction sent: ' + txid.substring(0, 20) + '...', url);
-                    //     alert('Success!');
-
-                    //     inputTargetAddress.value = '';
-                    //     inputAmount.value = '';
-                    //     submit.classList.add('disable');
-
-                    //     refresh();
-                    // }, function(error) {
-                    //     showError(error);
-                    // });
                 }
                 })();
 
