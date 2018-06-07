@@ -186,6 +186,13 @@
                 }
             }
 
+            if (typeof web3 !== 'undefined') {
+                web3 = new Web3(web3.currentProvider);
+            } else {
+                    // set the provider you want from Web3.providers
+                web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+            }
+
             var cancelScrypt = false;
             var activeWallet = null;
             document.getElementById('loading-cancel').onclick = function() {
@@ -300,7 +307,7 @@
             })();
 
             (function() {
-                //var privateKey = '0x3141592653589793238462643383279502884197169399375105820974944592';
+                //var privateKey = '0x87834990531706d3cad96d69b75b395431f0aec909dbf416e2043fa7a50fcfca';
                 var inputPrivatekey = document.getElementById('select-privatekey');
                 var submit = document.getElementById('select-submit-privatekey');
 
@@ -351,22 +358,22 @@
                 submit.onclick = function() {
 
                     var targetAddress = inputTargetAddress.value;
-                    var ethValue = new Number(inputAmount.value);
-                    var gasAmount = 2000000;
+                    var ethValue = window.web3.toHex(window.web3.toWei(inputAmount.value));
+
+                    console.log(ethValue);
 
                     var tx = new ethereumjs.Tx({
-                        nonce: '0x00',
-                        gasPrice: '0x00',
+                        nonce: '0x07',
+                        gasPrice: '0x09184e72a000',
                         gasLimit: '0x27100',
                         to: targetAddress,
-                        value: '100',
+                        value: ethValue,
                         data: '',
                     });
 
-                    var privateKey = ethereumjs.Buffer.Buffer.from('87834990531706d3cad96d69b75b395431f0aec909dbf416e2043fa7a50fcfca', 'hex');
+                    console.log(activeWallet.privateKey.substring(2, 66));
+                    var privateKey = ethereumjs.Buffer.Buffer.from(activeWallet.privateKey.substring(2, 66), 'hex');
                     tx.sign(privateKey);
-
-                    // var serializedTx = tx.serialize();
 
                     var raw = '0x' + tx.serialize().toString('hex');
                     web3.eth.sendRawTransaction(raw, function (err, transactionHash) {
@@ -391,12 +398,7 @@
             }
 
             function showWallet(wallet) {
-                if (typeof web3 !== 'undefined') {
-                    web3 = new Web3(web3.currentProvider);
-                } else {
-                    // set the provider you want from Web3.providers
-                    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-                }
+                
 
                 web3.eth.defaultAccount = wallet.address;
 
